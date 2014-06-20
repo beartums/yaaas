@@ -1,6 +1,6 @@
-var yaaasApp = angular.module('yaaasApp', []);
+var yaaasApp = angular.module('yaaas', []);
 
-yaaasApp.service('yaaas',function($timeout, $rootScope) {
+yaaasApp.service('yaaaService',function($timeout, $rootScope) {
   var Alert = function(title,text,timeout,alertLevel) {
 	  this.title = title || '';
 	  this.text = text || '';

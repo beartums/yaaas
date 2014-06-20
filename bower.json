@@ -1,18 +1,31 @@
 {
   "name": "yaaas",
   "main": [
-    "yaaas.js"
+    "yaaas.js",
+    "yaaas.tpl.html",
+    "yaaas.css"
   ],
-  "version": "v0.1.0-alpha"
-  "description": "Alert service allowing multiple alerts without obstrocting ui interaction more than needed",
+  "description": "Alert service allowing multiple alerts without obstructing ui interaction more than needed",
   "authors": [
     {
       "name": "Eric Griffith",
       "email": "eric@griffithnet.com"
     }
   ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/beartums/yaaas.git"
+  },
+  "keywords": [
+    "alert",
+    "service",
+    "directive",
+    "angular"
+  ],
+  "dependencies": {
+    "angularjs": "*",
+    "bootstrap": "~3.1.1",
+    "angular-animate": "~1.2.18"
   }
 }
