@@ -49,7 +49,18 @@ yaaasApp.service('yaaaService',function($timeout, $rootScope) {
 yaaasApp.directive('yaaAlert', function() {
 	return {
 		restrict: 'EA',
-		templateUrl: 'bower_components/yaaas.tpl.html'
+		template: "<div class='yaaas-alerts'>\n" +
+					"<div ng-repeat='alert in yaaasAlerts' \n" +
+						"class='alert yaaas-alert' \n" +
+						"ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
+									"'alert-warning':alert.isLevel('warning'),\n" +
+									"'alert-danger':alert.isLevel('danger'),\n" +
+									"'alert-success':alert.isLevel('success')}\">\n" +
+										"<strong>{{alert.title}} </strong>\n" +
+										"{{alert.text}}\n" +
+					"</div>\n" +
+				"</div>\n"
+		//templateUrl: 'bower_components/yaaas.tpl.html'
 	};
 });
 	
