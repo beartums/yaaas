@@ -1,7 +1,7 @@
 yaaas
 =====
 
-Yet Another Angular Alert Service
+## Yet Another Angular Alert Service
 
 When finished, this component will provide a trail of alerts with variable timeouts as well as an alert history.  Alerts will display on top of the DOM, obscuring interactions with other DOM objects, but the spaces between alerts will be interactive. Envisioned is the ability to attache the allerts to any sector of the browser, dynamically specify the allowable number of displayed alerts, etc.  Currently in its infancy.
 
@@ -34,8 +34,8 @@ When finished, this component will provide a trail of alerts with variable timeo
 * Everything else is done for you
 
 ### yaaaService
-#### .addAlert (title, message, timeout, level)
-##### title
+>#### .addAlert (title, message, timeout, level)
+>>##### title
 Bolded portion of the alert: **Warning** This is an alert
 ##### message
 Alert protion of the alert ('This is an alert' in the above example)
