@@ -25,7 +25,6 @@
   ],
   "dependencies": {
     "angularjs": "*",
-    "bootstrap": "~3.1.1",
-    "angular-animate": "*"
+    "bootstrap": "~3.1.1"
   }
 }
