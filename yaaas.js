@@ -49,7 +49,7 @@ yaaasApp.service('yaaaService',function($timeout, $rootScope) {
 yaaasApp.directive('yaaAlert', function() {
 	return {
 		restrict: 'EA',
-		templateUrl: 'yaaas.tpl.html'
+		templateUrl: 'bower_components/yaaas.tpl.html'
 	};
 });
 	
