@@ -1,13 +1,23 @@
 .yaaas-alerts {
-	position:fixed;
-	right: 0;
-	width: 300;
-	top: 0;
-	height: 0;
-	z-index:10;
+	position: absolute;
+    width: 300px;
+    right: 20px;
+    height: 0px;
+	z-index: 10;
 }
 .yaaas-alert {
 	z-index:10;
-	position: relative;
+	margin-top: 20;
+}
+.yaaas-alerts-plus {
+	position: absolute;
+    width: 300px;
+    right: 20px;
+	z-index: 10;
+	pointer-events: none;
+}
+.yaaas-alert-plus {
+	z-index:10;
+	pointer-events: all;
 	margin-top: 20;
 }

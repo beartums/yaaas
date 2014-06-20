@@ -1,5 +1,18 @@
 var yaaasApp = angular.module('yaaas', []);
 
+yaaasApp.constant('template',
+		"<div class='yaaas-alerts'>\n" +
+			"<div ng-repeat='alert in yaaasAlerts' \n" +
+				"class='alert yaaas-alert' \n" +
+				"ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
+							"'alert-warning':alert.isLevel('warning'),\n" +
+							"'alert-danger':alert.isLevel('danger'),\n" +
+							"'alert-success':alert.isLevel('success')}\">\n" +
+							"<button type='button' class='close' aria-hidden='true' ng-click='yaaaService.removeAlert(alert)'>&times;</button>" +
+							"<strong>{{alert.title}} </strong>{{alert.text}}\n" +
+			"</div>\n" +
+		"</div>\n"
+		)
 yaaasApp.service('yaaaService',function($timeout, $rootScope) {
   var Alert = function(title,text,timeout,alertLevel) {
 	  this.title = title || '';
@@ -46,21 +59,18 @@ yaaasApp.service('yaaaService',function($timeout, $rootScope) {
   return yaaas;
 });
 
-yaaasApp.directive('yaaAlert', function() {
+yaaasApp.directive('yaaAlert', function(template) {
 	return {
 		restrict: 'EA',
-		template: "<div class='yaaas-alerts'>\n" +
-					"<div ng-repeat='alert in yaaasAlerts' \n" +
-						"class='alert yaaas-alert' \n" +
-						"ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
-									"'alert-warning':alert.isLevel('warning'),\n" +
-									"'alert-danger':alert.isLevel('danger'),\n" +
-									"'alert-success':alert.isLevel('success')}\">\n" +
-										"<strong>{{alert.title}} </strong>\n" +
-										"{{alert.text}}\n" +
-					"</div>\n" +
-				"</div>\n"
-		//templateUrl: 'bower_components/yaaas.tpl.html'
+		template: template
 	};
+});
+
+yaaasApp.directive('yaaAlertPlus', function(template) {
+	return {
+		restrict: 'EA',
+		template: template.replace('yaaas-alerts','yaaas-alerts-plus')
+	};
+					
 });
 	
