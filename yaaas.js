@@ -1,14 +1,14 @@
 var yaaasApp = angular.module('yaaas', []);
 
 yaaasApp.constant('template',
-		"<div class='yaaas-alerts'>\n" +
+		"<div class='yaaasList'>\n" +
 			"<div ng-repeat='alert in yaaasAlerts' \n" +
-				"class='alert yaaas-alert' \n" +
+				"class='alert yaaasItem' \n" +
 				"ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
 							"'alert-warning':alert.isLevel('warning'),\n" +
 							"'alert-danger':alert.isLevel('danger'),\n" +
 							"'alert-success':alert.isLevel('success')}\">\n" +
-							"<button type='button' class='close' aria-hidden='true' ng-click='yaaaService.removeAlert(alert)'>&times;</button>" +
+							"<button type='button' class='close' aria-hidden='true' ng-click='alert.removeMe()'>&times;</button>" +
 							"<strong>{{alert.title}} </strong>{{alert.text}}\n" +
 			"</div>\n" +
 		"</div>\n"
@@ -25,6 +25,9 @@ yaaasApp.service('yaaaService',function($timeout, $rootScope) {
   Alert.prototype.isLevel = function(level) {
 	  return this.alertLevel==level;
   };
+  Alert.prototype.removeMe = function() {
+	  yaaas.removeAlert(this);
+  };
   
   var yaaas = {};
   
@@ -35,7 +38,7 @@ yaaasApp.service('yaaaService',function($timeout, $rootScope) {
 	  var i = _alerts.indexOf(alert);
 	  _alerts.splice(i,1);
 	  $rootScope.yaaasAlerts = _alerts;
-	  $rootScope.$digest();
+	  //$rootScope.$digest();
   };
   
   yaaas.addAlert = function(title, text, timeout, alertLevel) {
@@ -62,14 +65,16 @@ yaaasApp.service('yaaaService',function($timeout, $rootScope) {
 yaaasApp.directive('yaaAlert', function(template) {
 	return {
 		restrict: 'EA',
-		template: template
+		template: template.replace('yaaasList','yaaas-alerts')
+		.replace('yaaasItem','yaaas-alert')
 	};
 });
 
 yaaasApp.directive('yaaAlertPlus', function(template) {
 	return {
 		restrict: 'EA',
-		template: template.replace('yaaas-alerts','yaaas-alerts-plus')
+		template: template.replace('yaaasList','yaaas-alerts-plus')
+						.replace('yaaasItem','yaaas-alert-plus')
 	};
 					
 });
