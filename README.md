@@ -34,7 +34,8 @@ When finished, this component will provide a trail of alerts with variable timeo
 * Everything else is done for you
 
 ### yaaaService
->#### .addAlert (title, message, timeout, level)
+>#### .addAlert(title, message, timeout, level)
+Add an alert to the queue.
 >>##### title
 Bolded portion of the alert: **Warning** This is an alert
 ##### message
@@ -43,5 +44,12 @@ Alert protion of the alert ('This is an alert' in the above example)
 Seconds before the message will disappear from the screen. 0 or a negative will make it display until the close button is clicked.
 ##### level
 Alert level, corresponding to Bootstrap standards ('info', 'success', 'warning'. 'danger').
+>#### .removeAlert(alert)
+remove the specified alert from the queue.
+>>##### alert
+The alert object to be removed
+
+
+
 
 
