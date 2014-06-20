@@ -1,0 +1,49 @@
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+dev/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.project
+.tern-project
+
+# logs
+*.log
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin 
+.target
+
+# TeXlipse plugin
+.texlipse
+
+# Bower modules
+bower_components/
+
+# other external modules
+vendors/
+
+# node modules
+node_modules/
+
+#documentation directories for angular documentation jsdoc documentation is in /docs-- until I decide which way to go
+ngdocular/
+ngdocs/
