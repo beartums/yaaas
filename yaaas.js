@@ -1,18 +1,19 @@
 var yaaasApp = angular.module('yaaas', []);
 
 yaaasApp.constant('template',
-		"<div class='yaaasList'>\n" +
-			"<div ng-repeat='alert in yaaasAlerts' \n" +
-				"class='alert yaaasItem' \n" +
-				"ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
-							"'alert-warning':alert.isLevel('warning'),\n" +
-							"'alert-danger':alert.isLevel('danger'),\n" +
-							"'alert-success':alert.isLevel('success')}\">\n" +
-							"<button type='button' class='close' aria-hidden='true' ng-click='alert.removeMe()'>&times;</button>" +
-							"<strong>{{alert.title}} </strong>{{alert.text}}\n" +
-			"</div>\n" +
+		"<div class='yaaas-alerts peClass vPosClass hPosClass' >\n" +
+		"	<div ng-repeat='alert in yaaasAlerts' \n" +
+		"			class='alert yaaas-alert peClass' \n" +
+		"			ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
+		"				'alert-warning':alert.isLevel('warning'),\n" +
+		"				'alert-danger':alert.isLevel('danger'),\n" +
+		"				'alert-success':alert.isLevel('success')}\">\n" +
+		"					<button type='button' class='close' aria-hidden='true' ng-click='alert.removeMe()'>&times;</button>" +
+		"					<strong>{{alert.title}} </strong>{{alert.text}}\n" +
+		"	</div>\n" +
 		"</div>\n"
-		)
+		);
+
 yaaasApp.service('yaaaService',function($timeout, $rootScope) {
   var Alert = function(title,text,timeout,alertLevel) {
 	  this.title = title || '';
@@ -66,7 +67,27 @@ yaaasApp.directive('yaaAlert', function(template) {
 	return {
 		restrict: 'EA',
 		template: template.replace('yaaasList','yaaas-alerts')
-		.replace('yaaasItem','yaaas-alert')
+						.replace('yaaasItem','yaaas-alert'),
+		compile: function(element,attrs) {
+			var hPos = (attrs.hPos || 'right').toLowerCase();
+			var vPos = (attrs.vPos || 'top').toLowerCase();
+			var isPe = attrs.pe || false;
+			var width = (attrs.width || '300px').toLowerCase();
+			vPos = isPe ? vPos : 'top';
+			
+			var html = element.html();
+			
+			var repStr = isPe ? 'yaaas-pe' : 'yaaas-not-pe';
+			html = html.replace(/peClass/g, repStr);
+			html = html.replace(/vPosClass/g, 'yaaas-' + vPos);
+			html = html.replace(/hPosClass/g, 'yaaas-' + hPos);
+			
+			element.html(html);
+			element.children().css('width',width);
+			
+			return function($scope,element,attrs) {};
+			
+		}
 	};
 });
 
