@@ -1,9 +1,12 @@
 var yaaasApp = angular.module('yaaas', []);
 
 yaaasApp.constant('template',
-		"<div class='yaaas-alerts peClass vPosClass hPosClass' >\n" +
-		"	<div ng-repeat='alert in yaaasAlerts' \n" +
-		"			class='alert yaaas-alert peClass' \n" +
+		"<div class='yaaas-alerts {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }} " +
+				"{{vPos ?  \"yaaas-\" + vPos :  \"yaaas-top\"}} " +
+				"{{hPos ?  \"yaaas-\" + hPos :  \"yaaas-right\"}}' \n" +
+		"		style='width: {{width || \"300px\"}}'>\n" +
+		"	<div ng-repeat='alert in yaaas.yaaasAlerts' \n" +
+		"			class='alert yaaas-alert {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
 		"			ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
 		"				'alert-warning':alert.isLevel('warning'),\n" +
 		"				'alert-danger':alert.isLevel('danger'),\n" +
@@ -14,7 +17,7 @@ yaaasApp.constant('template',
 		"</div>\n"
 		);
 
-yaaasApp.service('yaaaService',function($timeout, $rootScope) {
+yaaasApp.service('yaaaService',function($timeout) {
   var Alert = function(title,text,timeout,alertLevel) {
 	  this.title = title || '';
 	  this.text = text || '';
@@ -38,7 +41,8 @@ yaaasApp.service('yaaaService',function($timeout, $rootScope) {
   yaaas.removeAlert = function(alert) {
 	  var i = _alerts.indexOf(alert);
 	  _alerts.splice(i,1);
-	  $rootScope.yaaasAlerts = _alerts;
+	  //$rootScope.yaaasAlerts = _alerts;
+	  yaaas.yaaasAlerts = _alerts;
 	  //$rootScope.$digest();
   };
   
@@ -51,7 +55,8 @@ yaaasApp.service('yaaaService',function($timeout, $rootScope) {
 			  yaaas.removeAlert(alert);
 		  }, alert.timeout * 1000);
 	  }
-	  $rootScope.yaaasAlerts=_alerts;
+	  //$rootScope.yaaasAlerts=_alerts;
+	  yaaas.yaaasAlerts = _alerts;
 	  //$rootScope.$digest();
   };
   
@@ -59,44 +64,31 @@ yaaasApp.service('yaaaService',function($timeout, $rootScope) {
 	  return _alertsHistory;
   };
   
-  
   return yaaas;
 });
 
-yaaasApp.directive('yaaAlert', function(template) {
+yaaasApp.directive('yaaAlert', function(template, yaaaService) {
 	return {
 		restrict: 'EA',
-		template: template.replace('yaaasList','yaaas-alerts')
-						.replace('yaaasItem','yaaas-alert'),
+		scope: {
+			vPos: "@vPos",
+			hPos: "@hPos",
+			isPe: "@pe",
+			width: "@width"
+			},
+		template: template,
 		compile: function(element,attrs) {
-			var hPos = (attrs.hPos || 'right').toLowerCase();
-			var vPos = (attrs.vPos || 'top').toLowerCase();
-			var isPe = attrs.pe || false;
-			var width = (attrs.width || '300px').toLowerCase();
-			vPos = isPe ? vPos : 'top';
 			
-			var html = element.html();
 			
-			var repStr = isPe ? 'yaaas-pe' : 'yaaas-not-pe';
-			html = html.replace(/peClass/g, repStr);
-			html = html.replace(/vPosClass/g, 'yaaas-' + vPos);
-			html = html.replace(/hPosClass/g, 'yaaas-' + hPos);
-			
-			element.html(html);
-			element.children().css('width',width);
-			
-			return function($scope,element,attrs) {};
-			
+			return function(scope,element,attrs) {
+				var b = element.html();
+				scope.yaaas = yaaaService;
+				var c = b;
+			};
 		}
+		
 	};
 });
 
-yaaasApp.directive('yaaAlertPlus', function(template) {
-	return {
-		restrict: 'EA',
-		template: template.replace('yaaasList','yaaas-alerts-plus')
-						.replace('yaaasItem','yaaas-alert-plus')
-	};
-					
-});
+
 	
