@@ -21,7 +21,8 @@
     "alert",
     "service",
     "directive",
-    "angular"
+    "angular",
+    "angularjs"
   ],
   "dependencies": {
     "angularjs": "*",

@@ -9,13 +9,12 @@ When finished, this component will provide a trail of alerts with variable timeo
 ```bower install yaaas --save```
 
 ## Features
-* Closeable popover alerts
-* Anchored to top-right of window
+* Closeable, auto-scrolling, popover alerts
+* Anchored to one of the widnow's four corners
 * Variable display time
 * Bootstrap Info, Warning, Danger, and Success are supported
 * Variable number of alerts to display at one time (NYI)
-* Alert history (NYI)
-* Variable anchor points
+* Alert history
 
 *NYI: Not Yet Implemented*
 
@@ -30,7 +29,36 @@ When finished, this component will provide a trail of alerts with variable timeo
 * Add alerts using yaaaService.addAlert() in your controller
 * Everything else is done for you
 
-### <yaa-alert> element
+myApp.js:
+```
+angular.module('myApp',['yaaas'])
+
+  .controller('myAppCtrl', function($scope, yaaaService) {
+    yaaaService.addAlert('Warning!', 'This is an important alert'); // default to 5 seconds, info style
+    yaaaService.addAlert('Warning!', 'This is a more important alert',10,'danger'); // 10 second display, danger style
+    yaaaService.addAlert('Thank goodness!', 'Dodged a bullet on that one',15, 'success'); 15 seconds, success style
+  });
+```
+
+The HTML:
+```
+<!DOCTYPE html>
+<html>
+	<head>
+  	  <title>yaaas demo</title>
+    	  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    	  <link rel="stylesheet" href="yaaas.css">
+	</head>
+
+	<body ng-app="myApp"  ng-controller="myAppCtrl">
+          <script src="bower_components/angular/angular.min.js"></script>
+          <script src="yaaas.js"></script>
+          <script src="myApp.js"></script>
+          <yaa-alert></yaa-alert>
+        </body> 
+```
+
+### yaa-alert element
 >#### **h-pos** attribute
 Which side of the screen to display the scrolling alerts. ('left'/'right', default 'right') 
 #### **v-pos** attrribute
@@ -51,6 +79,8 @@ cannot, as currently implemented, scroll from the bottom.
 ```<yaa-alert v-pos="bottom" h-pos="left"></yaa-alert>```
 ...will scroll your 300 pixel wide alerts from the top (pe is not set to true) on the left side of the screen
 
+NOTE: The attributes are dynamic.  If you set it to be `width="{{alertWidth}}"` you can change it in the controller
+or through user input and the size will immediately reflect the change.
 
 ### yaaaService
 >#### .addAlert(title, message, timeout, level)
@@ -69,7 +99,8 @@ remove the specified alert from the queue.
 >>##### alert
 The alert object to be removed
 
-
+>#### .getAlertHistory()
+Get an array of all the alerts since the app was initialised.
 
 
 
