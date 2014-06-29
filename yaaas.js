@@ -1,18 +1,22 @@
 var yaaasApp = angular.module('yaaas', []);
 
-yaaasApp.constant('template',
-		"<div class='yaaas-alerts {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
-		"		style='{{getPosStyle(vPos,\"v\")}}{{getPosStyle(hPos,\"h\")}}{{getWidthStyle()}}'>\n" +
-		"	<div ng-repeat='alert in yaaas.yaaasAlerts' \n" +
-		"			class='alert yaaas-alert {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
-		"			ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
-		"				'alert-warning':alert.isLevel('warning'),\n" +
-		"				'alert-danger':alert.isLevel('danger'),\n" +
-		"				'alert-success':alert.isLevel('success')}\">\n" +
-		"					<button type='button' class='close' aria-hidden='true' ng-click='alert.removeMe()'>&times;</button>" +
-		"					<strong>{{alert.title}} </strong>{{alert.text}}\n" +
-		"	</div>\n" +
-		"</div>\n"
+yaaasApp.constant('CONSTANTS',{
+		template: "<div class='yaaas-alerts {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
+					"		style='{{getPosStyle(vPos,\"v\")}}{{getPosStyle(hPos,\"h\")}}{{getWidthStyle()}}'>\n" +
+					"	<div ng-repeat='alert in yaaas.yaaasAlerts' \n" +
+					"			class='alert yaaas-alert {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
+					"			ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
+					"				'alert-warning':alert.isLevel('warning'),\n" +
+					"				'alert-danger':alert.isLevel('danger'),\n" +
+					"				'alert-success':alert.isLevel('success')}\">\n" +
+					"					<button type='button' class='close' aria-hidden='true' ng-click='alert.removeMe()'>&times;</button>" +
+					"					<strong>{{alert.title}} </strong>{{alert.text}}\n" +
+					"	</div>\n" +
+					"</div>\n",
+		defaults: {
+				'v': {top: 0, bottom: 0},
+				'h': {left: 20, right: -20}
+				}
 		);
 
 yaaasApp.service('yaaaService',function($timeout) {
@@ -39,9 +43,7 @@ yaaasApp.service('yaaaService',function($timeout) {
   yaaas.removeAlert = function(alert) {
 	  var i = _alerts.indexOf(alert);
 	  _alerts.splice(i,1);
-	  //$rootScope.yaaasAlerts = _alerts;
 	  yaaas.yaaasAlerts = _alerts;
-	  //$rootScope.$digest();
   };
   
   yaaas.addAlert = function(title, text, timeout, alertLevel) {
@@ -53,9 +55,7 @@ yaaasApp.service('yaaaService',function($timeout) {
 			  yaaas.removeAlert(alert);
 		  }, alert.timeout * 1000);
 	  }
-	  //$rootScope.yaaasAlerts=_alerts;
 	  yaaas.yaaasAlerts = _alerts;
-	  //$rootScope.$digest();
   };
   
   yaaas.getAlertsHistory = function() {
@@ -65,7 +65,7 @@ yaaasApp.service('yaaaService',function($timeout) {
   return yaaas;
 });
 
-yaaasApp.directive('yaaAlert', function(template, yaaaService, $window) {
+yaaasApp.directive('yaaAlert', function(CONSTANTS, yaaaService, $window) {
 	
 	return {
 		restrict: 'EA',
@@ -75,7 +75,7 @@ yaaasApp.directive('yaaAlert', function(template, yaaaService, $window) {
 			pe: "@pe",
 			width: "@width"
 		},
-		template: template,
+		template: CONSTANTS.template,
 		link: function(scope,element,attrs) {
 			
 			scope.yaaas = yaaaService;
@@ -95,23 +95,20 @@ yaaasApp.directive('yaaAlert', function(template, yaaaService, $window) {
 			 * @description Return the position parameters for a specified 
 			 * position attribute
 			 * @param {string} posType 'V' for vertical position attribute, 'H' for horizontal
-			 * @param {string} posData Left/Right (for 'H'), 'Top/Bottom' (for 'V')
-			 * OR, if numeric, + number indicates ofset from top or left 
+			 * @param {string} if non-numeric, expext "top/bottom" for v and "left/right"
+			 " for h.  If numeric, + number indicates ofset from top or left 
 			 * and - number indicates offset from right or bottom based on posType;
 			 * 0 will be considered negative for defaulting position
 			 */
-			scope.getPosStyle = function(posData, posType) {
+			scope.getPosStyle = function(posType, posData) {
 				posData = posData ? posData.toLowerCase() : '';
 				posType = posType ? posType.toLowerCase() : '';
 				if (posType != 'v' && posType != 'h') return '';
 				
-				var posDefaults = posType == 'v' ? 
-						{top: 0, bottom: 0} : {right: -20, left: 20};
-				var posValues = posType == 'v' ?
-						['top','bottom'] : ['left','right']
-				
+				var posDefaults = constants.defaults[posType]
+
 				if (isNaN(parseInt(posData))) {	
-					posData = (posValues.indexOf(posData)>-1) ? posData : '';
+					posData = (posDefaults[posData]) ? posData : '';
 					if (!posData && posType) {
 						posData = posType == 'v' ? 'top' : 'right'
 					}

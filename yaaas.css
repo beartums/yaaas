@@ -1,19 +1,7 @@
 .yaaas-alerts {
 	position: fixed;
-/*	  width: 300px; */
 	z-index: 10;
 }
-.yaaas-bottom {
-	bottom: 0px;
-}
-.yaaas-top {
-	top: 0px;
-}
-.yaaas-right {
-	right: 20px;
-}
-.yaaas-left {
-	left: 20px;
 }
 .yaaas-alerts.yaaas-pe {
 	pointer-events: none;
@@ -29,13 +17,3 @@
 	pointer-events: all;
 }
 
-.yaaas-alerts-plus {
-	position: fixed;
-    width: 300px;
-	pointer-events: none;
-	z-index: 10;
-}
-.yaaas-alert-plus {
-	pointer-events: all;
-	margin-top: 20px;
-}

@@ -47,3 +47,6 @@ node_modules/
 #documentation directories for angular documentation jsdoc documentation is in /docs-- until I decide which way to go
 ngdocular/
 ngdocs/
+
+#text editor docs
+*.sublime-*
