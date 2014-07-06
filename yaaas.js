@@ -14,9 +14,10 @@ yaaasApp.constant('CONSTANTS',{
 					"	</div>\n" +
 					"</div>\n",
 		defaults: {
-				'v': {top: 0, bottom: 0},
-				'h': {left: 20, right: -20}
+				'v': {'top': 0, 'bottom': 0},
+				'h': {'left': 20, 'right': -20}
 				}
+			}
 		);
 
 yaaasApp.service('yaaaService',function($timeout) {
@@ -94,21 +95,21 @@ yaaasApp.directive('yaaAlert', function(CONSTANTS, yaaaService, $window) {
 			 * @function
 			 * @description Return the position parameters for a specified 
 			 * position attribute
-			 * @param {string} posType 'V' for vertical position attribute, 'H' for horizontal
 			 * @param {string} if non-numeric, expext "top/bottom" for v and "left/right"
+			 * @param {string} posType 'V' for vertical position attribute, 'H' for horizontal
 			 " for h.  If numeric, + number indicates ofset from top or left 
 			 * and - number indicates offset from right or bottom based on posType;
 			 * 0 will be considered negative for defaulting position
 			 */
-			scope.getPosStyle = function(posType, posData) {
+			scope.getPosStyle = function(posData, posType) {
 				posData = posData ? posData.toLowerCase() : '';
 				posType = posType ? posType.toLowerCase() : '';
 				if (posType != 'v' && posType != 'h') return '';
 				
-				var posDefaults = constants.defaults[posType]
+				var posDefaults = CONSTANTS.defaults[posType]
 
 				if (isNaN(parseInt(posData))) {	
-					posData = (posDefaults[posData]) ? posData : '';
+					posData = posDefaults.hasOwnProperty(posData) ? posData : '';
 					if (!posData && posType) {
 						posData = posType == 'v' ? 'top' : 'right'
 					}
