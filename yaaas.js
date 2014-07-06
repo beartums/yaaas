@@ -113,18 +113,17 @@ yaaasApp.directive('yaaAlert', function(CONSTANTS, yaaaService, $window) {
 					if (!posData && posType) {
 						posData = posType == 'v' ? 'top' : 'right'
 					}
-					var pos = posDefaults[posData] ? posDefaults[posData] : 0;
+					var pos = posDefaults.hasOwnProperty(posData) ? posDefaults[posData] : 0;
 				} else {
 					var pos = parseInt(posData);
 					if (pos<=0) {
 						posData = posType == 'v' ? 'bottom' : 'right';
-						pos = -1 * pos
 					} else {
 						posData = posType == 'v' ? 'top' : 'left';
 					}
 				}
 				
-				return posData + ': ' + pos + 'px; '
+				return posData + ': ' + Math.abs(pos) + 'px; '
 			};
 			
 	
