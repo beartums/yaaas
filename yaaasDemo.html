@@ -13,9 +13,10 @@
 	    <script src="yaaas.js"></script>
 		<script src="yaaasDemo.js"></script>
 		<div class="container">
-			<yaa-alert pe="true" width="{{width1}}" h-pos='{{hpos1}}' v-pos="{{vpos1}}"></yaa-alert>
+			<yaa-alert pe="true" name='dir1' width="{{width1}}" h-pos='{{hpos1}}' v-pos="{{vpos1}}"></yaa-alert>
 			<div class="well">
-				<h2>YAAAS+</h2>
+				<h2>YAAAS</h2>
+				<h3>form for directive named 'dir1'</h3>
 				<form class="form-inline">
 					<div class="form-group">
 						<label for="alertTime">Display Time:</label>
@@ -39,14 +40,15 @@
 					</div>
 
 				</form>
-				<button class="btn btn-info" ng-click="addAlert('info')">info</button>
-				<button class="btn btn-warning" ng-click="addAlert('warning')">warning</button>
-				<button class="btn btn-danger" ng-click="addAlert('danger')">danger</button>
-				<button class="btn btn-success" ng-click="addAlert('success')">success</button>
+				<button class="btn btn-info" ng-click="addAlert('info','dir1')">info</button>
+				<button class="btn btn-warning" ng-click="addAlert('warning','dir1')">warning</button>
+				<button class="btn btn-danger" ng-click="addAlert('danger','dir1')">danger</button>
+				<button class="btn btn-success" ng-click="addAlert('success','dir1')">success</button>
 			</div>
-			<yaa-alert></yaa-alert>
+			<yaa-alert name = "dir2"></yaa-alert>
 			<div class="well">
 				<h2>YAAAS</h2>
+				<h3>form for directive named 'dir2'</h3>
 				<form class="form-inline">
 					<div class="form-group">
 						<label for="alertTime">Display Time:</label>
@@ -54,11 +56,17 @@
 						ng-model="alertTime">
 					</div>
 				</form>
-				<button class="btn btn-info" ng-click="addAlert('info')">info</button>
-				<button class="btn btn-warning" ng-click="addAlert('warning')">warning</button>
-				<button class="btn btn-danger" ng-click="addAlert('danger')">danger</button>
-				<button class="btn btn-success" ng-click="addAlert('success')">success</button>
+				<button class="btn btn-info" ng-click="addAlert('info','dir2')">info</button>
+				<button class="btn btn-warning" ng-click="addAlert('warning','dir2')">warning</button>
+				<button class="btn btn-danger" ng-click="addAlert('danger','dir2')">danger</button>
+				<button class="btn btn-success" ng-click="addAlert('success','dir2')">success</button>
 			</div>
+			
+			<h3>alerts entered with no directive name</h3>
+			<button class="btn btn-info" ng-click="addAlert('info')">info</button>
+			<button class="btn btn-warning" ng-click="addAlert('warning')">warning</button>
+			<button class="btn btn-danger" ng-click="addAlert('danger')">danger</button>
+			<button class="btn btn-success" ng-click="addAlert('success')">success</button>
 			
 		</div>
 	</body>

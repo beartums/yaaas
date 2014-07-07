@@ -3,7 +3,7 @@ var yaaasApp = angular.module('yaaas', []);
 yaaasApp.constant('CONSTANTS',{
 		template: "<div class='yaaas-alerts {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
 					"		style='{{getPosStyle(vPos,\"v\")}}{{getPosStyle(hPos,\"h\")}}{{getWidthStyle()}}'>\n" +
-					"	<div ng-repeat='alert in yaaas.yaaasAlerts' \n" +
+					"	<div ng-repeat='alert in yaaas.yaaasAlerts | FilterDirectives:name' \n" +
 					"			class='alert yaaas-alert {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
 					"			ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
 					"				'alert-warning':alert.isLevel('warning'),\n" +
@@ -20,8 +20,22 @@ yaaasApp.constant('CONSTANTS',{
 			}
 		);
 
+yaaasApp.filter('FilterDirectives', function() {
+	return function(alerts,name) {
+		var filtered = [];
+		name = name || '';
+		angular.forEach(alerts, function(alert) {
+			if (alert.name==name || alert.name == '') {
+				filtered.push(alert)
+			}
+		});
+		return filtered;
+	}
+})
+
 yaaasApp.service('yaaaService',function($timeout) {
-  var Alert = function(title,text,timeout,alertLevel) {
+  var Alert = function(title,text,timeout,alertLevel,name) {
+  	  this.name = name || '';
 	  this.title = title || '';
 	  this.text = text || '';
 	  this.timeout = timeout || 5;
@@ -47,8 +61,8 @@ yaaasApp.service('yaaaService',function($timeout) {
 	  yaaas.yaaasAlerts = _alerts;
   };
   
-  yaaas.addAlert = function(title, text, timeout, alertLevel) {
-	  var alert = new Alert(title,text,timeout,alertLevel);
+  yaaas.addAlert = function(title, text, timeout, alertLevel,name) {
+	  var alert = new Alert(title,text,timeout,alertLevel,name);
 	  _alertsHistory.push(alert);
 	  _alerts.push(alert);
 	  if (timeout>0) {
@@ -74,7 +88,8 @@ yaaasApp.directive('yaaAlert', function(CONSTANTS, yaaaService, $window) {
 			vPos: "@vPos",
 			hPos: "@hPos",
 			pe: "@pe",
-			width: "@width"
+			width: "@width",
+			name: "@name"
 		},
 		template: CONSTANTS.template,
 		link: function(scope,element,attrs) {
@@ -108,12 +123,14 @@ yaaasApp.directive('yaaAlert', function(CONSTANTS, yaaaService, $window) {
 				
 				var posDefaults = CONSTANTS.defaults[posType]
 
+				// If not numeric, MUST be 'top' or 'bottom' for vertical or 'left' or 'right' for horizontal
 				if (isNaN(parseInt(posData))) {	
 					posData = posDefaults.hasOwnProperty(posData) ? posData : '';
 					if (!posData && posType) {
 						posData = posType == 'v' ? 'top' : 'right'
 					}
 					var pos = posDefaults.hasOwnProperty(posData) ? posDefaults[posData] : 0;
+				// if numeric, negative indicates offset from bottom or right while positive is offset from top or left
 				} else {
 					var pos = parseInt(posData);
 					if (pos<=0) {
@@ -122,7 +139,7 @@ yaaasApp.directive('yaaAlert', function(CONSTANTS, yaaaService, $window) {
 						posData = posType == 'v' ? 'top' : 'left';
 					}
 				}
-				
+				// turn negative numbers
 				return posData + ': ' + Math.abs(pos) + 'px; '
 			};
 			

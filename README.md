@@ -61,6 +61,8 @@ The HTML:
 ### yaa-alert element
 >#### **h-pos** attribute
 Which side of the screen to display the scrolling alerts. ('left'/'right', default 'right') 
+#### **name** attribute
+If specified, this directive will only show alerts named with this name AND alerts named with ''.
 #### **v-pos** attrribute
 Whether to show the alerts at the bottom of the screen or the top.  NOTE: as currently 
 implemented, if pe is not set to 'true', this value will always set itself to 'top'. 
@@ -83,7 +85,7 @@ NOTE: The attributes are dynamic.  If you set it to be `width="{{alertWidth}}"` 
 or through user input and the size will immediately reflect the change.
 
 ### yaaaService
->#### .addAlert(title, message, timeout, level)
+>#### .addAlert(title, message, timeout, level, name)
 Add an alert to the queue.
 >>##### title
 Bolded portion of the alert: **Warning** This is an alert
@@ -93,6 +95,8 @@ Alert protion of the alert ('This is an alert' in the above example)
 Seconds before the message will disappear from the screen. 0 or a negative will make it display until the close button is clicked.
 ##### level
 Alert level, corresponding to Bootstrap standards ('info', 'success', 'warning'. 'danger').
+##### name
+The name of the directive this alert is associated with.  '' displays it in all yaa-alert directives (default = '').
 
 >#### .removeAlert(alert)
 remove the specified alert from the queue.
