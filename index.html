@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Yaaas : Yet Another Angular Alert Service">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Yaaas</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/beartums/yaaas">View on GitHub</a>
+
+          <h1 id="project_title">Yaaas</h1>
+          <h2 id="project_tagline">Yet Another Angular Alert Service</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/beartums/yaaas/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/beartums/yaaas/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="yaaas" class="anchor" href="#yaaas" aria-hidden="true"><span class="octicon octicon-link"></span></a>yaaas</h1>
+
+<h2>
+<a id="yet-another-angular-alert-service" class="anchor" href="#yet-another-angular-alert-service" aria-hidden="true"><span class="octicon octicon-link"></span></a>Yet Another Angular Alert Service</h2>
+
+<p>When finished, this component will provide a trail of alerts with variable timeouts as well as an alert history.  Alerts will display on top of the DOM, obscuring interactions with other DOM objects, but the spaces between alerts will be interactive. Envisioned is the ability to attache the allerts to any sector of the browser, dynamically specify the allowable number of displayed alerts, etc.  Currently in its infancy.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p><code>bower install yaaas --save</code></p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Closeable, auto-scrolling, popover alerts</li>
+<li>Anchored to one of the widnow's four corners</li>
+<li>Variable display time</li>
+<li>Bootstrap Info, Warning, Danger, and Success are supported</li>
+<li>Variable number of alerts to display at one time (NYI)</li>
+<li>Alert history</li>
+</ul>
+
+<p><em>NYI: Not Yet Implemented</em></p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<ul>
+<li>Include yaaas.js and yaaas.css in your html file</li>
+<li>Pass yaaas into your module
+<code>angular.app('myApp',['yaaas']);</code>
+</li>
+<li>Pass yaaaService into your controller
+<code>myApp.controller('myAppCtrl', function(yaaaService) {...};</code>
+</li>
+<li>Include the <code>&lt;yaa-alert&gt;&lt;/yaa-alert&gt;</code> element in your html file</li>
+<li>Configure your  directive with v-pos, h-pos, width, and pe attributes</li>
+<li>Add alerts using yaaaService.addAlert() in your controller</li>
+<li>Everything else is done for you</li>
+</ul>
+
+<p>myApp.js:</p>
+
+<pre><code>angular.module('myApp',['yaaas'])
+
+  .controller('myAppCtrl', function($scope, yaaaService) {
+    yaaaService.addAlert('Warning!', 'This is an important alert'); // default to 5 seconds, info style
+    yaaaService.addAlert('Warning!', 'This is a more important alert',10,'danger'); // 10 second display, danger style
+    yaaaService.addAlert('Thank goodness!', 'Dodged a bullet on that one',15, 'success'); 15 seconds, success style
+  });
+</code></pre>
+
+<p>The HTML:</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;yaaas demo&lt;/title&gt;
+          &lt;link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"&gt;
+          &lt;link rel="stylesheet" href="yaaas.css"&gt;
+    &lt;/head&gt;
+
+    &lt;body ng-app="myApp"  ng-controller="myAppCtrl"&gt;
+          &lt;script src="bower_components/angular/angular.min.js"&gt;&lt;/script&gt;
+          &lt;script src="yaaas.js"&gt;&lt;/script&gt;
+          &lt;script src="myApp.js"&gt;&lt;/script&gt;
+          &lt;yaa-alert&gt;&lt;/yaa-alert&gt;
+        &lt;/body&gt; 
+</code></pre>
+
+<h3>
+<a id="yaa-alert-element" class="anchor" href="#yaa-alert-element" aria-hidden="true"><span class="octicon octicon-link"></span></a>yaa-alert element</h3>
+
+<blockquote>
+<h4>
+<a id="h-pos-attribute" class="anchor" href="#h-pos-attribute" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>h-pos</strong> attribute</h4>
+
+<p>Which side of the screen to display the scrolling alerts. ('left'/'right', default 'right') </p>
+
+<h4>
+<a id="name-attribute" class="anchor" href="#name-attribute" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>name</strong> attribute</h4>
+
+<p>If specified, this directive will only show alerts named with this name AND alerts named with ''.</p>
+
+<h4>
+<a id="v-pos-attrribute" class="anchor" href="#v-pos-attrribute" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>v-pos</strong> attrribute</h4>
+
+<p>Whether to show the alerts at the bottom of the screen or the top.  NOTE: as currently 
+implemented, if pe is not set to 'true', this value will always set itself to 'top'. 
+('bottom'/'top', defaults 'top')</p>
+
+<h4>
+<a id="width-attribute" class="anchor" href="#width-attribute" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>width</strong> attribute</h4>
+
+<p>Width of the alert (default '300px')</p>
+
+<h4>
+<a id="pe-attribute" class="anchor" href="#pe-attribute" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>pe</strong> attribute</h4>
+
+<p>Boolean, indicating whether your target browsers support pointer-events (most modern non-mobile 
+browsers do, but that is only recently).  If you do not specify this and set it to 'true', alerts
+cannot, as currently implemented, scroll from the bottom.</p>
+</blockquote>
+
+<h3>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h3>
+
+<p><code>&lt;yaa-alert width="400px" v-pos="bottom" pe="true"&gt;&lt;/yaa-alert&gt;</code>
+...wil scroll your alerts from the bottom on the right side of the screen and each alert will be 400 pixels wide</p>
+
+<p><code>&lt;yaa-alert v-pos="bottom" h-pos="left"&gt;&lt;/yaa-alert&gt;</code>
+...will scroll your 300 pixel wide alerts from the top (pe is not set to true) on the left side of the screen</p>
+
+<p>NOTE: The attributes are dynamic.  If you set it to be <code>width="{{alertWidth}}"</code> you can change it in the controller
+or through user input and the size will immediately reflect the change.</p>
+
+<h3>
+<a id="yaaaservice" class="anchor" href="#yaaaservice" aria-hidden="true"><span class="octicon octicon-link"></span></a>yaaaService</h3>
+
+<blockquote>
+<h4>
+<a id="addalerttitle-message-timeout-level-name" class="anchor" href="#addalerttitle-message-timeout-level-name" aria-hidden="true"><span class="octicon octicon-link"></span></a>.addAlert(title, message, timeout, level, name)</h4>
+
+<p>Add an alert to the queue.</p>
+
+<blockquote>
+<h5>
+<a id="title" class="anchor" href="#title" aria-hidden="true"><span class="octicon octicon-link"></span></a>title</h5>
+
+<p>Bolded portion of the alert: <strong>Warning</strong> This is an alert</p>
+
+<h5>
+<a id="message" class="anchor" href="#message" aria-hidden="true"><span class="octicon octicon-link"></span></a>message</h5>
+
+<p>Alert protion of the alert ('This is an alert' in the above example)</p>
+
+<h5>
+<a id="timeout-default--5" class="anchor" href="#timeout-default--5" aria-hidden="true"><span class="octicon octicon-link"></span></a>timeout (default = 5)</h5>
+
+<p>Seconds before the message will disappear from the screen. 0 or a negative will make it display until the close button is clicked.</p>
+
+<h5>
+<a id="level" class="anchor" href="#level" aria-hidden="true"><span class="octicon octicon-link"></span></a>level</h5>
+
+<p>Alert level, corresponding to Bootstrap standards ('info', 'success', 'warning'. 'danger').</p>
+
+<h5>
+<a id="name" class="anchor" href="#name" aria-hidden="true"><span class="octicon octicon-link"></span></a>name</h5>
+
+<p>The name of the directive this alert is associated with.  '' displays it in all yaa-alert directives (default = '').</p>
+</blockquote>
+
+<h4>
+<a id="removealertalert" class="anchor" href="#removealertalert" aria-hidden="true"><span class="octicon octicon-link"></span></a>.removeAlert(alert)</h4>
+
+<p>remove the specified alert from the queue.</p>
+
+<blockquote>
+<h5>
+<a id="alert" class="anchor" href="#alert" aria-hidden="true"><span class="octicon octicon-link"></span></a>alert</h5>
+
+<p>The alert object to be removed</p>
+</blockquote>
+
+<h4>
+<a id="getalerthistory" class="anchor" href="#getalerthistory" aria-hidden="true"><span class="octicon octicon-link"></span></a>.getAlertHistory()</h4>
+
+<p>Get an array of all the alerts since the app was initialised.</p>
+</blockquote>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Yaaas maintained by <a href="https://github.com/beartums">beartums</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
