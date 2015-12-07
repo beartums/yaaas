@@ -5,16 +5,27 @@ yaaas
 
 When finished, this component will provide a trail of alerts with variable timeouts as well as an alert history.  Alerts will display on top of the DOM, obscuring interactions with other DOM objects, but the spaces between alerts will be interactive. Envisioned is the ability to attache the allerts to any sector of the browser, dynamically specify the allowable number of displayed alerts, etc.  Currently in its infancy.
 
+[github page](http://beartums.github.io/yaaas)
+[demo](http://beartums.github.io/yaaas/yaaasDemo.html)
+
 ## Installation
-```bower install yaaas --save```
+Just put it in a servable directory and load yaasDemo.html.
+
+## Dependencies
+* angular.js (currently using 1.4.2, but works with earlier versions as well)
+* angular-animate (1.4.2 - probably earlier versions as well)
+* bootstrap.css
 
 ## Features
 * Closeable, auto-scrolling, popover alerts
 * Anchored to one of the widnow's four corners
-* Variable display time
+* Variable display duration
 * Bootstrap Info, Warning, Danger, and Success are supported
-* Variable number of alerts to display at one time (NYI)
-* Alert history
+* Variable number of alerts to display at one time
+* Alert history (available to the controller)
+* Alert History (scrollable, user-controlled)  (NYI)
+* Email alerts history (NYI)
+* Auto-size to window width (NYI)
 
 *NYI: Not Yet Implemented*
 
