@@ -1,0 +1,14 @@
+<div class='yaaas-alerts {{ isPe ? "yaaas-pe" : "yaaas-not-pe" }}'
+		style='{{getPosStyle(vPos,"v")}}{{getPosStyle(hPos,"h")}}{{getWidthStyle()}}'>
+	<div ng-repeat='alert in yaaas.yaaasAlerts | FilterDirectives:name' 
+			class='alert yaaas-alert {{ isPe ? "yaaas-pe" : "yaaas-not-pe" }}' 
+			ng-class="{'alert-info':alert.isLevel('info'),
+									'alert-warning':alert.isLevel('warning'),
+									'alert-danger':alert.isLevel('danger'),
+									'alert-success':alert.isLevel('success')}">
+					<button type='button' class='close' aria-hidden='true' ng-click='alert.removeMe()'>
+						&times;
+					</button>
+					<strong>{{alert.title}} </strong>{{alert.text}}
+	</div>
+</div>
