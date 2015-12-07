@@ -20,6 +20,11 @@ yaaasApp.constant('CONSTANTS',{
 			}
 		);
 
+/**
+ * Filter alerts by name
+ *
+ *
+**/ 
 yaaasApp.filter('FilterDirectives', function() {
 	return function(alerts,name) {
 		var filtered = [];
@@ -34,6 +39,9 @@ yaaasApp.filter('FilterDirectives', function() {
 })
 
 yaaasApp.service('yaaaService',function($timeout) {
+	/**
+	 * Define the alert object
+	 **/
   var Alert = function(title,text,timeout,alertLevel,name) {
   	  this.name = name || '';
 	  this.title = title || '';
@@ -43,13 +51,21 @@ yaaasApp.service('yaaaService',function($timeout) {
 	  this.timestamp = new Date();
   };
   
+	/**
+	 * Is this alert of the specified level
+	 **/
   Alert.prototype.isLevel = function(level) {
 	  return this.alertLevel==level;
   };
+	
+	/** 
+	 * Remove this alert from the list of active alerts
+	 **/
   Alert.prototype.removeMe = function() {
 	  yaaas.removeAlert(this);
   };
   
+	// Alert Service Object
   var yaaas = {};
   
   var _alerts = [];
@@ -85,11 +101,11 @@ yaaasApp.directive('yaaAlert', function(CONSTANTS, yaaaService, $window) {
 	return {
 		restrict: 'EA',
 		scope: {
-			vPos: "@vPos",
-			hPos: "@hPos",
+			vPos: "@vPos",  	// Vertical position
+			hPos: "@hPos",		// Horizontal position
 			pe: "@pe",
-			width: "@width",
-			name: "@name"
+			width: "@width", 	// Message width
+			name: "@name"		// Directive name (for multiple directives)
 		},
 		template: CONSTANTS.template,
 		link: function(scope,element,attrs) {
@@ -110,11 +126,11 @@ yaaasApp.directive('yaaAlert', function(CONSTANTS, yaaaService, $window) {
 			 * @function
 			 * @description Return the position parameters for a specified 
 			 * position attribute
-			 * @param {string} if non-numeric, expext "top/bottom" for v and "left/right"
-			 * @param {string} posType 'V' for vertical position attribute, 'H' for horizontal
+			 * @param {string} if non-numeric, expect "top/bottom" for v and "left/right"
 			 " for h.  If numeric, + number indicates ofset from top or left 
 			 * and - number indicates offset from right or bottom based on posType;
 			 * 0 will be considered negative for defaulting position
+			 * @param {string} posType 'V' for vertical position attribute, 'H' for horizontal
 			 */
 			scope.getPosStyle = function(posData, posType) {
 				posData = posData ? posData.toLowerCase() : '';
