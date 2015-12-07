@@ -39,10 +39,23 @@
 
 <p>When finished, this component will provide a trail of alerts with variable timeouts as well as an alert history.  Alerts will display on top of the DOM, obscuring interactions with other DOM objects, but the spaces between alerts will be interactive. Envisioned is the ability to attache the allerts to any sector of the browser, dynamically specify the allowable number of displayed alerts, etc.  Currently in its infancy.</p>
 
+<p><a href="http://beartums.github.io/yaaas">github page</a></p>
+
+<p><a href="http://beartums.github.io/yaaas/yaaasDemo.html">demo</a></p>
+
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<p><code>bower install yaaas --save</code></p>
+<p>Just put it in a servable directory and load yaasDemo.html.</p>
+
+<h2>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<ul>
+<li>angular.js (currently using 1.4.2, but works with earlier versions as well)</li>
+<li>angular-animate (1.4.2 - probably earlier versions as well)</li>
+<li>bootstrap.css</li>
+</ul>
 
 <h2>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
@@ -50,10 +63,13 @@
 <ul>
 <li>Closeable, auto-scrolling, popover alerts</li>
 <li>Anchored to one of the widnow's four corners</li>
-<li>Variable display time</li>
+<li>Variable display duration</li>
 <li>Bootstrap Info, Warning, Danger, and Success are supported</li>
-<li>Variable number of alerts to display at one time (NYI)</li>
-<li>Alert history</li>
+<li>Variable number of alerts to display at one time</li>
+<li>Alert history (available to the controller)</li>
+<li>Alert History (scrollable, user-controlled)  (NYI)</li>
+<li>Email alerts history (NYI)</li>
+<li>Auto-size to window width (NYI)</li>
 </ul>
 
 <p><em>NYI: Not Yet Implemented</em></p>
