@@ -1,0 +1,31 @@
+{
+  "name": "yaaas",
+  "main": [
+    "yaaas.js",
+    "yaaas.tpl.html",
+    "yaaas.css"
+  ],
+  "description": "Alert service allowing multiple alerts without obstructing ui interaction more than needed",
+  "authors": [
+    {
+      "name": "Eric Griffith",
+      "email": "eric@griffithnet.com"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beartums/yaaas.git"
+  },
+  "keywords": [
+    "alert",
+    "service",
+    "directive",
+    "angular",
+    "angularjs"
+  ],
+  "dependencies": {
+    "angularjs": "*",
+    "bootstrap": "~3.1.1"
+  }
+}
