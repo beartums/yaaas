@@ -9,15 +9,23 @@ When finished, this component will provide a trail of alerts with variable timeo
 [demo](http://beartums.github.io/yaaas/yaaasDemo.html)
 
 ## Installation
-```bower install yaaas --save```
+Just put it in a servable directory and load yaasDemo.html.
+
+## Dependencies
+* angular.js (currently using 1.4.2, but works with earlier versions as well)
+* angular-animate (1.4.2 - probably earlier versions as well)
+* bootstrap.css
 
 ## Features
 * Closeable, auto-scrolling, popover alerts
 * Anchored to one of the widnow's four corners
-* Variable display time
+* Variable display duration
 * Bootstrap Info, Warning, Danger, and Success are supported
-* Variable number of alerts to display at one time (NYI)
-* Alert history
+* Variable number of alerts to display at one time
+* Alert history (available to the controller)
+* Alert History (scrollable, user-controlled)  (NYI)
+* Email alerts history (NYI)
+* Auto-size to window width (NYI)
 
 *NYI: Not Yet Implemented*
 
