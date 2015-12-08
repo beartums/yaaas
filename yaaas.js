@@ -4,11 +4,8 @@ yaaasApp.constant('CONSTANTS',{
 		template: "<div class='yaaas-alerts {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
 					"		style='{{getPosStyle(vPos,\"v\")}}{{getPosStyle(hPos,\"h\")}}{{getWidthStyle()}}'>\n" +
 					"	<div ng-repeat='alert in yaaas.yaaasAlerts | FilterDirectives:name' \n" +
-					"			class='alert yaaas-alert {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
-					"			ng-class=\"{'alert-info':alert.isLevel('info'),\n" +
-					"				'alert-warning':alert.isLevel('warning'),\n" +
-					"				'alert-danger':alert.isLevel('danger'),\n" +
-					"				'alert-success':alert.isLevel('success')}\">\n" +
+					"			class='alert yaaas-alert {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }} \n" +
+					"							alert-{{alert.alertLevel}}' \n" +
 					"					<button type='button' class='close' aria-hidden='true' ng-click='alert.removeMe()'>&times;</button>" +
 					"					<strong>{{alert.title}} </strong>{{alert.text}}\n" +
 					"	</div>\n" +
@@ -42,13 +39,14 @@ yaaasApp.service('yaaaService',function($timeout) {
 	/**
 	 * Define the alert object
 	 **/
-  var Alert = function(title,text,timeout,alertLevel,name) {
+  var Alert = function(title,text,timeout,alertLevel,name,stacktrace) {
   	  this.name = name || '';
 	  this.title = title || '';
 	  this.text = text || '';
 	  this.timeout = timeout || 5;
 	  this.alertLevel = alertLevel || 'info';
 	  this.timestamp = new Date();
+	  this.stacktrace = stacktrace || new Error().stack;
   };
   
 	/**
@@ -71,14 +69,21 @@ yaaasApp.service('yaaaService',function($timeout) {
   var _alerts = [];
   var _alertsHistory = [];
   
+  /**
+   * Remove the specified alert from the active alerts collection
+   * (ie. stop showing the alert)
+   **/
   yaaas.removeAlert = function(alert) {
 	  var i = _alerts.indexOf(alert);
 	  _alerts.splice(i,1);
 	  yaaas.yaaasAlerts = _alerts;
   };
   
-  yaaas.addAlert = function(title, text, timeout, alertLevel,name) {
-	  var alert = new Alert(title,text,timeout,alertLevel,name);
+  /**
+   * Add an alert to the active alerts and the alert history
+   **/
+  yaaas.addAlert = function(title, text, timeout, alertLevel,name,stacktrace) {
+	  var alert = new Alert(title,text,timeout,alertLevel,name,stacktrace);
 	  _alertsHistory.push(alert);
 	  _alerts.push(alert);
 	  if (timeout>0) {
