@@ -13,9 +13,11 @@
 	    <script src="https://rawgit.com/beartums/yaaas/master/yaaas.js"></script>
 		<script src="https://rawgit.com/beartums/yaaas/master/yaaasDemo.js"></script>
 		<div class="container">
+			<div class="jumbotrom">
+			<h1>yaaas.js</h1>
+			<p>Yet Another Angular Alert Service</p>
 			<yaa-alert pe="true" name='dir1' width="{{width1}}" h-pos='{{hpos1}}' v-pos="{{vpos1}}"></yaa-alert>
 			<div class="well">
-				<h2>YAAAS</h2>
 				<h3>form for directive named 'dir1'</h3>
 				<form class="form-inline">
 					<div class="form-group">
@@ -47,7 +49,6 @@
 			</div>
 			<yaa-alert name = "dir2"></yaa-alert>
 			<div class="well">
-				<h2>YAAAS</h2>
 				<h3>form for directive named 'dir2'</h3>
 				<form class="form-inline">
 					<div class="form-group">
@@ -62,12 +63,13 @@
 				<button class="btn btn-success" ng-click="addAlert('success','dir2')">success</button>
 			</div>
 			
-			<h3>alerts entered with no directive name</h3>
-			<button class="btn btn-info" ng-click="addAlert('info')">info</button>
-			<button class="btn btn-warning" ng-click="addAlert('warning')">warning</button>
-			<button class="btn btn-danger" ng-click="addAlert('danger')">danger</button>
-			<button class="btn btn-success" ng-click="addAlert('success')">success</button>
-			
+			<div class="well">
+				<h3>alerts entered with no directive name</h3>
+				<button class="btn btn-info" ng-click="addAlert('info')">info</button>
+				<button class="btn btn-warning" ng-click="addAlert('warning')">warning</button>
+				<button class="btn btn-danger" ng-click="addAlert('danger')">danger</button>
+				<button class="btn btn-success" ng-click="addAlert('success')">success</button>
+			</div>
 		</div>
 	</body>
 </html>
