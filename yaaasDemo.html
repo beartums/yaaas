@@ -1,17 +1,19 @@
 <!DOCTYPE html>
+
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>yaaas demo</title>
-    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    	<link rel="stylesheet" href="https://rawgit.com/beartums/yaaas/master/yaaas.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">    	<link rel="stylesheet" href="yaaas.css">
 	</head>
 
 	<body ng-app="yaaasDemo"  ng-controller="yaaasDemoCtrl">
-	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
-	    <script src="https://rawgit.com/beartums/yaaas/master/angular-animate.1.4.2.js"></script>
-	    <script src="https://rawgit.com/beartums/yaaas/master/yaaas.js"></script>
-		<script src="https://rawgit.com/beartums/yaaas/master/yaaasDemo.js"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+	  <script src="alasql.min.js"></script>
+	  <script src="xlsx.core.min.js"></script>
+	  <script src="yaaas.js"></script>
+		<script src="yaaasDemo.js"></script>
 		<div class="container">
 			<div class="jumbotrom">
 			<h1>yaaas.js 
@@ -20,7 +22,8 @@
 				</small>
 			</h1>
 			<p>Yet Another Angular Alert Service</p>
-			<yaa-alert pe="true" name='dir1' width="{{width1}}" h-pos='{{hpos1}}' v-pos="{{vpos1}}"></yaa-alert>
+			<yaa-alert pe="true" name='dir1' width="{{width1}}" h-pos='{{hpos1}}' v-pos="{{vpos1}}" ></yaa-alert>
+			<yaa-toolbar name='dir1' h-pos='{{hpos1}}' v-pos="{{vpos1}}" ></yaa-toolbar>
 			<div class="well">
 				<h3>form for directive named 'dir1'</h3>
 				<form class="form-inline">
