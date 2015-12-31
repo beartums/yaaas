@@ -1,45 +1,56 @@
 <!DOCTYPE html>
+
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>yaaas demo</title>
-    	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-    	<link rel="stylesheet" href="yaaas.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">    	<link rel="stylesheet" href="yaaas.css">
 	</head>
 
 	<body ng-app="yaaasDemo"  ng-controller="yaaasDemoCtrl">
-	    <script src="bower_components/angular/angular.min.js"></script>
-	    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
-	    <script src="yaaas.js"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+	  <script src="alasql.min.js"></script>
+	  <script src="xlsx.core.min.js"></script>
+	  <script src="yaaas.js"></script>
 		<script src="yaaasDemo.js"></script>
 		<div class="container">
-			<yaa-alert pe="true" name='dir1' width="{{width1}}" h-pos='{{hpos1}}' v-pos="{{vpos1}}"></yaa-alert>
+			<div class="jumbotrom">
+			<h1>yaaas.js 
+				<small>
+					<a id="forkme_banner" href="https://github.com/beartums/yaaas">View on GitHub</a>
+				</small>
+			</h1>
+			<p>Yet Another Angular Alert Service</p>
+			<yaa-alert pe="true" name='dir1' width="{{width1}}" h-pos='{{hpos1}}' v-pos="{{vpos1}}" ></yaa-alert>
+			<yaa-toolbar name='dir1' h-pos='{{hpos1}}' v-pos="{{vpos1}}" ></yaa-toolbar>
 			<div class="well">
-				<h2>YAAAS</h2>
 				<h3>form for directive named 'dir1'</h3>
 				<form class="form-inline">
-					<div class="form-group">
-						<label for="alertTime">Display Time:</label>
-						<input type="text" class="form-control" id="alertTime"  value="10"
-						ng-model="alertTime">
+					<div class="row">
+						<div class="form-group col-md-3">
+							<label for="alertTime">Display Time:</label>
+							<input type="text" class="form-control" id="alertTime"  value="10"
+							ng-model="alertTime1">
+						</div>
+						<div class="form-group col-md-3">
+							<label for="hpos">horizontal loc:</label>
+							<input type="text" class="form-control" id="hpos" value="top"
+							ng-model="hpos1">
+						</div>
+						<div class="form-group col-md-3">
+							<label for="vpos">vertical loc:</label>
+							<input type="text" class="form-control" id="vpos" value="right"
+							ng-model="vpos1">
+						</div>
+						<div class="form-group col-md-3">
+							<label for="width">bubble width:</label>
+							<input type="text" class="form-control" id="width" value="400px"
+							ng-model="width1">
+						</div>
 					</div>
-					<div class="form-group">
-						<label for="hpos">horizontal loc:</label>
-						<input type="text" class="form-control" id="hpos" value="top"
-						ng-model="hpos1">
-					</div>
-					<div class="form-group">
-						<label for="vpos">vertical loc:</label>
-						<input type="text" class="form-control" id="vpos" value="right"
-						ng-model="vpos1">
-					</div>
-					<div class="form-group">
-						<label for="width">width:</label>
-						<input type="text" class="form-control" id="width" value="400px"
-						ng-model="width1">
-					</div>
-
 				</form>
+				<br />
 				<button class="btn btn-info" ng-click="addAlert('info','dir1')">info</button>
 				<button class="btn btn-warning" ng-click="addAlert('warning','dir1')">warning</button>
 				<button class="btn btn-danger" ng-click="addAlert('danger','dir1')">danger</button>
@@ -47,27 +58,30 @@
 			</div>
 			<yaa-alert name = "dir2"></yaa-alert>
 			<div class="well">
-				<h2>YAAAS</h2>
 				<h3>form for directive named 'dir2'</h3>
 				<form class="form-inline">
-					<div class="form-group">
-						<label for="alertTime">Display Time:</label>
-						<input type="text" class="form-control" id="alertTime" 
-						ng-model="alertTime">
+					<div class="row">
+						<div class="form-group col-md-3">
+							<label for="alertTime2">Display Time:</label>
+							<input type="text" class="form-control" id="alertTime" 
+							ng-model="alertTime">
+						</div>
 					</div>
 				</form>
+				<br />
 				<button class="btn btn-info" ng-click="addAlert('info','dir2')">info</button>
 				<button class="btn btn-warning" ng-click="addAlert('warning','dir2')">warning</button>
 				<button class="btn btn-danger" ng-click="addAlert('danger','dir2')">danger</button>
 				<button class="btn btn-success" ng-click="addAlert('success','dir2')">success</button>
 			</div>
 			
-			<h3>alerts entered with no directive name</h3>
-			<button class="btn btn-info" ng-click="addAlert('info')">info</button>
-			<button class="btn btn-warning" ng-click="addAlert('warning')">warning</button>
-			<button class="btn btn-danger" ng-click="addAlert('danger')">danger</button>
-			<button class="btn btn-success" ng-click="addAlert('success')">success</button>
-			
+			<div class="well">
+				<h3>alerts entered with no directive name</h3>
+				<button class="btn btn-info" ng-click="addAlert('info')">info</button>
+				<button class="btn btn-warning" ng-click="addAlert('warning')">warning</button>
+				<button class="btn btn-danger" ng-click="addAlert('danger')">danger</button>
+				<button class="btn btn-success" ng-click="addAlert('success')">success</button>
+			</div>
 		</div>
 	</body>
 </html>
