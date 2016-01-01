@@ -105,8 +105,8 @@ Which side of the screen to display the toolbar.  Usually this will mirror the s
 This should match the name of the alert element it is controlling.
 #### **v-pos** attribute (default 'bottom')
 Whether to show the alerts at the bottom of the screen or the top. ('top','bottom') 
-#### **showCounts** attribute (default 'true')
-whether to display the count buttons by default on loading
+#### **pinned** attribute (default 'false')
+True when you want the full toolbar to be displayed by default
 
 
 ### yaaaService

@@ -15,9 +15,11 @@ yaaasApp.constant('CONSTANTS',{
 		toolbarTemplate: 
 					"<div class='yaaas-alerts'\n" +
 					"		style='{{getPosStyle(vPos,\"v\")}}{{getPosStyle(hPos,\"h\")}}'>\n" +
-					"	<div class='btn-toolbar btn-toolbar-xs'>\n" +
-					"		<div class='btn-group btn-group-xs'>\n" +
-					"			<a ng-repeat='level in levels' ng-if='$parent.showCounts' \n" + 
+					"	<div class='btn-toolbar btn-toolbar-xs' \n" +
+					"		ng-mouseenter='showCounts=true'\n" +
+					"		ng-mouseleave='showCounts=false'>\n" +
+					"		<div class='btn-group btn-group-xs' ng-show='showCounts || pinCounts'>\n" +
+					"			<a ng-repeat='level in levels' \n" +
 					"				ng-click='yaaas.toggleLevel(name,level.class)'\n" +
 					"				ng-class='{active:yaaas.activeLevelIndex(name,level.class)>-1}'\n" +
 					"				class='btn btn-default' title='{{level.description}}'>\n" +
@@ -26,13 +28,14 @@ yaaasApp.constant('CONSTANTS',{
 					"			</a>\n" +
 					"		</div>\n" +
 					"		<div class='btn-group btn-group-xs'>\n" +
-					"			<a ng-click='toggleHistory(name)'  ng-if='showCounts' \n" +
+					"			<a ng-click='toggleHistory(name)'  ng-show='showCounts || pinCounts' \n" +
 					"				ng-disabled='(yaaas.getAlertsHistory() | Name:name).length==0'\n" +
 					"				class='btn btn-default' \n" +
 					"				ng-class='{active:showHistory}' title='Show history'>\n" +
 					"				<span class='fa fa-clock-o'></span>\n" +
 					"			</a>\n" +
-					"			<a ng-click='downloadMessages()' ng-if='showCounts && yaaas.canExport()' \n" +
+					"			<a ng-click='downloadMessages()' \n" +
+					"				ng-show='(showCounts || pinCounts) && yaaas.canExport()' \n" +
 					"				class='btn btn-default' \n" +
 					"				 ng-disabled='(yaaas.getAlertsHistory() | Name:name).length==0'\n" +
 					"				 title='Download Active Messages'>\n" +
@@ -43,15 +46,17 @@ yaaasApp.constant('CONSTANTS',{
 					"				 title='Clear all messages'>\n" +
 					"				<span class='fa fa-trash-o'></span>\n" +
 					"			</a>-->\n" +
-					"			<a ng-click='$parent.showCounts=!$parent.showCounts' \n" +
-					"				ng-if='!showCounts' class='btn btn-default' \n" +
-					"				title='Show message counts'>\n" +
-					"				<span class='fa fa-eye'></span>\n" +
+					"			<a ng-click='pinCounts=!pinCounts' \n" +
+					"				ng-show='showCounts || pinCounts' class='btn btn-default' \n" +
+					"				ng-class='{active: pinCounts}'\n" +
+					"				title='Pin message counts to the screen'>\n" +
+					"				<span class='fa fa-thumb-tack' ng-if='pinCounts'></span>\n" +
+					"				<span class='fa fa-thumb-tack fa-rotate-90' ng-if='!pinCounts'></span>\n" +
 					"			</a>\n" +
-					"			<a ng-click='$parent.showCounts=!$parent.showCounts' ng-if='showCounts'\n" +
+					"			<a  \n" +
 					"				class='btn btn-default' \n" +
-					"				 title='Hide message counts'>\n" +
-					"				<span class='fa fa-eye-slash'></span>\n" +
+					"				ng-class='{active: showCounts}'>\n" +
+					"				<span class='fa fa-warning'></span>\n" +
 					"			</a>\n" +
 					"		</div>\n" +
 					"	</div>\n" +
@@ -362,7 +367,7 @@ yaaasApp.directive('yaaToolbar', function(CONSTANTS, yaaaService, $window) {
 			vPos: "@vPos",  	// Vertical position
 			hPos: "@hPos",		// Horizontal position
 			name: "@name",		// Directive name (for multiple directives)
-			showCounts: "@showCounts" // should the count buttons be hidden when directive starts
+			pinned: "@pinned" // should the count buttons be displayed when directive starts
 		},
 		template: CONSTANTS.toolbarTemplate,
 		controller: function($scope,$timeout,$filter,NameFilter,LevelFilter) {
@@ -372,11 +377,11 @@ yaaasApp.directive('yaaToolbar', function(CONSTANTS, yaaaService, $window) {
 			$scope.levels = CONSTANTS.levels
 			
 			// Default to showing the entire toolbar
-			if ($scope.showCounts===false || $scope.showCounts=='false') {
-				$scope.showCounts=false;
+			if ($scope.pinned===true || $scope.pinned=='true') {
+				$scope.pinCounts=true;
 			} else {
 				$timeout(function() {
-					$scope.showCounts=true;
+					$scope.pinCounts=false;
 				});
 			}
 			
