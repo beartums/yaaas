@@ -1,52 +1,54 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Yaaas : Yet Another Angular Alert Service">
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Yaaas</title>
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Yaaas by beartums</title>
   </head>
 
   <body>
+    <div id="container">
+      <div class="inner">
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/beartums/yaaas">View on GitHub</a>
-
-          <h1 id="project_title">Yaaas</h1>
-          <h2 id="project_tagline">Yet Another Angular Alert Service</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/beartums/yaaas/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/beartums/yaaas/tarball/master">Download this project as a tar.gz file</a>
-            </section>
+        <header>
+          <h1>Yaaas</h1>
+          <h2>Yet Another Angular Alert Service</h2>
         </header>
-    </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/beartums/yaaas/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/beartums/yaaas/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/beartums/yaaas" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
 <a id="yaaas" class="anchor" href="#yaaas" aria-hidden="true"><span class="octicon octicon-link"></span></a>yaaas</h1>
 
 <h2>
 <a id="yet-another-angular-alert-service" class="anchor" href="#yet-another-angular-alert-service" aria-hidden="true"><span class="octicon octicon-link"></span></a>Yet Another Angular Alert Service</h2>
 
-<p>When finished, this component will provide a trail of alerts with variable timeouts as well as an alert history.  Alerts will display on top of the DOM, obscuring interactions with other DOM objects, but the spaces between alerts will be interactive. Envisioned is the ability to attache the allerts to any sector of the browser, dynamically specify the allowable number of displayed alerts, etc.  Currently in its infancy.</p>
+<p>Because there aren't enough toaster-like alert services out there, here's another option.  Most of the other services I found work just great, but are less useful in production environments where a user wants to be able to look at the messages after they disappear or send a history of the thrown alerts.  So, yaaas.</p>
 
-<p><a href="https://github.com/beartums/yaaas">github page</a></p>
+<p><a href="http://beartums.github.io/yaaas">github fancy page</a></p>
 
 <p><a href="http://beartums.github.io/yaaas/yaaasDemo.html">demo</a></p>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>Just put it in a servable directory and load yaasDemo.html.</p>
+<p>You need yaaas.js and yaaas.css.  Put them in a directory and load them as needed.</p>
+
+<p>To run the demo, just take the whole directory and click on launch yaaasDemo.html</p>
 
 <h2>
 <a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h2>
@@ -55,6 +57,8 @@
 <li>angular.js (currently using 1.4.2, but works with earlier versions as well)</li>
 <li>angular-animate (1.4.2 - probably earlier versions as well)</li>
 <li>bootstrap.css</li>
+<li>The incomparable <a href="https://github.com/agershun/alasql">alasql</a>, if you want to be able to download history to a CSV file (when using the toolbar directive)</li>
+<li>The very useful <a href="https://github.com/SheetJS/js-xlsx">XLSX</a>, if you want to be able to download history to an XLSX spreadsheet (when using the toolbar directive)</li>
 </ul>
 
 <h2>
@@ -67,12 +71,9 @@
 <li>Bootstrap Info, Warning, Danger, and Success are supported</li>
 <li>Variable number of alerts to display at one time</li>
 <li>Alert history (available to the controller)</li>
-<li>Alert History (scrollable, user-controlled)  (NYI)</li>
-<li>Email alerts history (NYI)</li>
-<li>Auto-size to window width (NYI)</li>
+<li>Alert History (scrollable, user-controlled)</li>
+<li>Download alerts history to CSV or XLSX</li>
 </ul>
-
-<p><em>NYI: Not Yet Implemented</em></p>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
@@ -87,6 +88,7 @@
 </li>
 <li>Include the <code>&lt;yaa-alert&gt;&lt;/yaa-alert&gt;</code> element in your html file</li>
 <li>Configure your  directive with v-pos, h-pos, width, and pe attributes</li>
+<li>Include the <code>&lt;yaa-toolbar&gt;&lt;/yaa-toolbar&gt;</code> element in your html file, if you want to expose the toolbar</li>
 <li>Add alerts using yaaaService.addAlert() in your controller</li>
 <li>Everything else is done for you</li>
 </ul>
@@ -147,6 +149,11 @@ implemented, if pe is not set to 'true', this value will always set itself to 't
 <p>Width of the alert (default '300px')</p>
 
 <h4>
+<a id="active-alerts-attribute-default-dangerwarning" class="anchor" href="#active-alerts-attribute-default-dangerwarning" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>active-alerts</strong> attribute (default ['danger','warning']</h4>
+
+<p>A string (or string array) of the alert class(es) that you want to be enabled for display by default.  Available classes are tied to boostrap classes: 'danger', 'warning', 'success', 'info'.  Enable the toolbar to give the user the ability to manipulate this setting</p>
+
+<h4>
 <a id="pe-attribute" class="anchor" href="#pe-attribute" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>pe</strong> attribute</h4>
 
 <p>Boolean, indicating whether your target browsers support pointer-events (most modern non-mobile 
@@ -163,8 +170,30 @@ cannot, as currently implemented, scroll from the bottom.</p>
 <p><code>&lt;yaa-alert v-pos="bottom" h-pos="left"&gt;&lt;/yaa-alert&gt;</code>
 ...will scroll your 300 pixel wide alerts from the top (pe is not set to true) on the left side of the screen</p>
 
-<p>NOTE: The attributes are dynamic.  If you set it to be <code>width="{{alertWidth}}"</code> you can change it in the controller
-or through user input and the size will immediately reflect the change.</p>
+<h3>
+<a id="yaa-toolbar-element" class="anchor" href="#yaa-toolbar-element" aria-hidden="true"><span class="octicon octicon-link"></span></a>yaa-toolbar element</h3>
+
+<blockquote>
+<h4>
+<a id="h-pos-attribute-default-right" class="anchor" href="#h-pos-attribute-default-right" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>h-pos</strong> attribute (default 'right')</h4>
+
+<p>Which side of the screen to display the toolbar.  Usually this will mirror the settings of the alert element. ('left'/'right') </p>
+
+<h4>
+<a id="name-attribute-1" class="anchor" href="#name-attribute-1" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>name</strong> attribute</h4>
+
+<p>This should match the name of the alert element it is controlling.</p>
+
+<h4>
+<a id="v-pos-attribute-default-bottom" class="anchor" href="#v-pos-attribute-default-bottom" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>v-pos</strong> attribute (default 'bottom')</h4>
+
+<p>Whether to show the alerts at the bottom of the screen or the top. ('top','bottom') </p>
+
+<h4>
+<a id="showcounts-attribute-default-true" class="anchor" href="#showcounts-attribute-default-true" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>showCounts</strong> attribute (default 'true')</h4>
+
+<p>whether to display the count buttons by default on loading</p>
+</blockquote>
 
 <h3>
 <a id="yaaaservice" class="anchor" href="#yaaaservice" aria-hidden="true"><span class="octicon octicon-link"></span></a>yaaaService</h3>
@@ -200,6 +229,11 @@ or through user input and the size will immediately reflect the change.</p>
 <a id="name" class="anchor" href="#name" aria-hidden="true"><span class="octicon octicon-link"></span></a>name</h5>
 
 <p>The name of the directive this alert is associated with.  '' displays it in all yaa-alert directives (default = '').</p>
+
+<h5>
+<a id="stacktrace" class="anchor" href="#stacktrace" aria-hidden="true"><span class="octicon octicon-link"></span></a>stacktrace</h5>
+
+<p>A stacktrace that can be saved with the error for later downloading</p>
 </blockquote>
 
 <h4>
@@ -218,19 +252,21 @@ or through user input and the size will immediately reflect the change.</p>
 <a id="getalerthistory" class="anchor" href="#getalerthistory" aria-hidden="true"><span class="octicon octicon-link"></span></a>.getAlertHistory()</h4>
 
 <p>Get an array of all the alerts since the app was initialised.</p>
+
+<h4>
+<a id="getalerthistory-1" class="anchor" href="#getalerthistory-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>.getAlertHistory()</h4>
+
+<p>Get an array of all the alerts since the app was initialised.</p>
 </blockquote>
-      </section>
+        </section>
+
+        <footer>
+          Yaaas is maintained by <a href="https://github.com/beartums">beartums</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
     </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Yaaas maintained by <a href="https://github.com/beartums">beartums</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
   </body>
 </html>
