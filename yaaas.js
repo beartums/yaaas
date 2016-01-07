@@ -69,7 +69,7 @@ yaaasApp.constant('CONSTANTS',{
 					"	<div ng-repeat='alert in yaaas.getAlertsHistory() | Name:name | 		Level:yaaas.activeLevels(name)' \n" +
 					"		class='alert yaaas-alert \n" +
 					"				alert-{{alert.alertLevel}}'> \n" +
-					"		<small title='{{alert.timestamp | date : 'dd MMM yyyy'}}'>\n" +
+					"		<small ng-attr-title='{{alert.timestamp | date : \"dd MMM yyyy\"}}'>\n" +
 					"			{{alert.timestamp | date : '(HH:mm:ss)'}} </small>\n" +
 					"		<strong>{{alert.title}} </strong>{{alert.text}}\n" +
 					"	</div>\n" +
@@ -448,25 +448,40 @@ yaaasApp.directive('yaaToolbar', function(CONSTANTS, yaaaService, $window) {
 					}
 					alasql.fn.jsonify = function(obj) {
 						if (!angular.isString(obj)) {
+							//var rtn = angular.toJson(obj,true).replace('>','&gt;').replace('<','&lt;');
 							var rtn = angular.toJson(obj,true);
 							return rtn;
 						} else {
-							return obj;
+							//var rtn = obj.replace(/\>/g,'&gt;').replace(/\</g,'&lt;').replace(/\&/g,'&amp;');
+							var rtn = obj;
+							return rtn
 						}
 					}
 				}
 				
 				
-				target = $scope.yaaas.canExportXlsx() ? 'XLSX' : 'CSV';
+				target = $scope.yaaas.canExportXlsx ? 'XLSX' : 'CSV';
+				var fileName = 'messages.' + target;
 				// Get the appropriate data
 				data = NameFilter($scope.yaaas.getAlertsHistory(),$scope.name);
 				data = LevelFilter(data,$scope.yaaas.activeLevels($scope.name));
 				// export
-				var fileName = 'messages.' + target.toLowerCase();
-				var select = "SELECT name,title,text,timeFmt(timestamp) as Time, dateFmt(timestamp) as Date,";
-				select += "alertLevel,jsonify(stacktrace) stack";
-				select += " INTO " + target + "('" + fileName + "',{sheetid:'messages',headers:true}) FROM ? ";
-				var x = alasql(select,[data]);
+				var opts = {
+					sheetid: 'Messages',
+					headers: true,
+
+					/*columns: [
+					  {columnid:'name'},
+					  {columnid:'title',width:100},
+					  {columnid:'text',width:300},
+					  {columnid:'alertLevel'},
+					  {columnid:'stack',width:500},
+					]*/
+				};
+				var select = "SELECT name,title,text,";
+				select += "alertLevel,jsonify(stacktrace) as stack";
+				select += " INTO " + target + "('" + fileName + "',?) FROM ? ";
+				var x = alasql(select,[opts,data]);
 			}
 	
 		}
@@ -474,6 +489,3 @@ yaaasApp.directive('yaaToolbar', function(CONSTANTS, yaaaService, $window) {
 		
 	};
 });
-
-
-	
