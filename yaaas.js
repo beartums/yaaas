@@ -5,7 +5,7 @@ yaaasApp.constant('CONSTANTS',{
 					"<div class='yaaas-alerts {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
 					"		style='{{getPosStyle(vPos,\"v\")}}{{getPosStyle(hPos,\"h\")}}{{getWidthStyle()}}'\n" +
 					"		ng-if='!yaaas.isShowingHistory(name)'>\n" +
-					"	<div ng-repeat='alert in yaaas.yaaasAlerts | Name:name | Level:yaaas.activeLevels(name)' \n" +
+					"	<div ng-repeat='alert in yaaas.yaaasAlerts | Level : yaaas.activeLevels(name) : name' \n" +
 					"		class='alert yaaas-alert {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }} \n" +
 					"				alert-{{alert.alertLevel}}'> \n" +
 					"		<button type='button' class='close' ng-click='alert.removeMe()'>&times;</button>" +
@@ -23,7 +23,7 @@ yaaasApp.constant('CONSTANTS',{
 					"				ng-click='yaaas.toggleLevel(name,level.class)'\n" +
 					"				ng-class='{active:yaaas.activeLevelIndex(name,level.class)>-1}'\n" +
 					"				class='btn btn-default' title='{{level.description}}'>\n" +
-					"				{{(yaaas.getAlertsHistory() | Level:level.class | Name:name).length}}\n" +
+					"				{{(yaaas.getAlertsHistory() | Level : level.class : name).length}}\n" +
 					"				<span class='fa fa-circle text-{{level.class}}'></span>\n" +
 					"			</a>\n" +
 					"		</div>\n" +
@@ -54,6 +54,7 @@ yaaasApp.constant('CONSTANTS',{
 					"				<span class='fa fa-thumb-tack fa-rotate-90' ng-if='!pinCounts'></span>\n" +
 					"			</a>\n" +
 					"			<a  \n" +
+					"				ng-disabled='(yaaas.getAlertsHistory() | Name:name).length==0'\n" +
 					"				class='btn btn-default' \n" +
 					"				ng-class='{active: showCounts}'>\n" +
 					"				<span class='fa fa-warning'></span>\n" +
@@ -106,9 +107,10 @@ yaaasApp.filter('Name', function() {
 })
 /**
  * Filter by alertLevel.class or an array of alertLevel classes
+ * secondary filter by directive name, if included
  **/
-yaaasApp.filter('Level', function() {
-	return function(alerts,level) {
+yaaasApp.filter('Level', function(NameFilter) {
+	return function(alerts,level,name) {
 		var levels = level;
 		if (levels) {
 			levels = angular.isArray(levels) ? levels : [levels]
@@ -116,7 +118,8 @@ yaaasApp.filter('Level', function() {
 			levels = [];
 		}
 		var filtered = [];
-		angular.forEach(alerts, function(alert) {
+		var nameFilteredAlerts = name ? NameFilter(alerts,name) : alerts;
+		angular.forEach(nameFilteredAlerts, function(alert) {
 			if (!levels) filtered.push(alert)
 			var isMatched = levels.some(function(level) { return alert.alertLevel==level });
 			if (isMatched || !levels) {
@@ -443,7 +446,16 @@ yaaasApp.directive('yaaToolbar', function(CONSTANTS, yaaaService, $window) {
 					alasql.fn.timeFmt = function(date) {
 						return $filter('date')(date,'HH:mm:ss');
 					}
+					alasql.fn.jsonify = function(obj) {
+						if (!angular.isString(obj)) {
+							var rtn = angular.toJson(obj,true);
+							return rtn;
+						} else {
+							return obj;
+						}
+					}
 				}
+				
 				
 				target = $scope.yaaas.canExportXlsx() ? 'XLSX' : 'CSV';
 				// Get the appropriate data
@@ -452,7 +464,7 @@ yaaasApp.directive('yaaToolbar', function(CONSTANTS, yaaaService, $window) {
 				// export
 				var fileName = 'messages.' + target.toLowerCase();
 				var select = "SELECT name,title,text,timeFmt(timestamp) as Time, dateFmt(timestamp) as Date,";
-				select += "alertLevel,stacktrace";
+				select += "alertLevel,jsonify(stacktrace) stack";
 				select += " INTO " + target + "('" + fileName + "',{sheetid:'messages',headers:true}) FROM ? ";
 				var x = alasql(select,[data]);
 			}
