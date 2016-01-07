@@ -10,7 +10,7 @@ yaaasDemo.controller('yaaasDemoCtrl',function($scope, yaaaService) {
 		level = level || 'warning';
 		yaaaService.addAlert('Title!',
 				'This is an important alert.  Please pay attention',
-				timeout,level,name,new Error('help','this is my eror').stack);
+				timeout,level,name);
 	}
 
 });
