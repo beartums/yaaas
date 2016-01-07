@@ -489,6 +489,3 @@ yaaasApp.directive('yaaToolbar', function(CONSTANTS, yaaaService, $window) {
 		
 	};
 });
-
-
-	
