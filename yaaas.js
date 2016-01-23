@@ -3,7 +3,7 @@ var yaaasApp = angular.module('yaaas', []);
 yaaasApp.constant('CONSTANTS',{
 		alertsTemplate: 
 					"<div class='yaaas-alerts {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }}' \n" +
-					"		style='{{getPosStyle(vPos,\"v\")}}{{getPosStyle(hPos,\"h\")}}{{getWidthStyle()}}'\n" +
+					"		ng-style='getPosNgStyle()' \n" +
 					"		ng-if='!yaaas.isShowingHistory(name)'>\n" +
 					"	<div ng-repeat='alert in yaaas.yaaasAlerts | Level : yaaas.activeLevels(name) : name' \n" +
 					"		class='alert yaaas-alert {{ isPe ? \"yaaas-pe\" : \"yaaas-not-pe\" }} \n" +
@@ -14,7 +14,7 @@ yaaasApp.constant('CONSTANTS',{
 					"</div>\n",
 		toolbarTemplate: 
 					"<div class='yaaas-alerts'\n" +
-					"		style='{{getPosStyle(vPos,\"v\")}}{{getPosStyle(hPos,\"h\")}}'>\n" +
+					"		ng-style='getPosNgStyle()'>\n" +
 					"	<div class='btn-toolbar btn-toolbar-xs' \n" +
 					"		ng-mouseenter='showCounts=true'\n" +
 					"		ng-mouseleave='showCounts=false'>\n" +
@@ -63,8 +63,8 @@ yaaasApp.constant('CONSTANTS',{
 					"	</div>\n" +
 					"</div>\n" +
 					"<div ng-if='showHistory==true'\n" +
-					"    style='{{getPosStyle(hPos,\"h\")}}{{getPosStyle(vPos,\"v\",25)}}\n" +
-					"			{{getWidthStyle()}} height:90vh; overflow:auto' \n" +
+					"    style='overflow:auto' \n" +
+					"    ng-style='getPosNgStyle()' \n" +
 					"	 class='yaaas-alerts'> \n" +
 					"	<div ng-repeat='alert in yaaas.getAlertsHistory() | Name:name | 		Level:yaaas.activeLevels(name)' \n" +
 					"		class='alert yaaas-alert \n" +
@@ -130,7 +130,7 @@ yaaasApp.filter('Level', function(NameFilter) {
 	}
 })
 
-yaaasApp.service('yaaaService',function($timeout,$filter,LevelFilter) {
+yaaasApp.service('yaaaService',function($timeout,$filter,LevelFilter, CONSTANTS) {
 	/**
 	 * Define the alert object
 	 **/
@@ -139,7 +139,8 @@ yaaasApp.service('yaaaService',function($timeout,$filter,LevelFilter) {
 	  this.title = title || '';
 	  this.text = text || '';
 	  this.timeout = timeout || 5;
-	  this.alertLevel = alertLevel || 'info';
+	  this.alertLevel = !alertLevel ? 'info' :
+	  						alertLevel == 'error' ? 'danger' : alertLevel;
 	  this.timestamp = new Date();
 	  this.stacktrace = stacktrace || new Error().stack;
   };
@@ -270,7 +271,44 @@ yaaasApp.service('yaaaService',function($timeout,$filter,LevelFilter) {
 	  var filterArray = angular.isArray(filterTextOrArray) ? filterTextOrArray : [filterTextOrArray];
 	  return LevelFilter(_alertsHistory,filterArray);
   };
-  
+  /** 
+   * returns the appropriate style element for each vertical and horizontal 
+   * options set by the client
+   *
+   * posData - value passed from the v-pos or h-pos attributes
+   * posType - 'v' or 'h'
+   * bump - amount to add to the positional offset
+   **/
+  yaaas.getPosObj = function (posData, posType, bump) {
+  	bump = +bump || 0;
+  	posData = posData ? posData.toLowerCase() : '';
+  	posType = posType ? posType.toLowerCase() : '';
+  	if (posType != 'v' && posType != 'h') return '';
+
+  	var posDefaults = CONSTANTS.defaults[posType]
+
+  	// If not numeric, MUST be 'top' or 'bottom' for vertical or 'left' or 'right' for horizontal
+  	if (isNaN(parseInt(posData))) {
+  		posData = posDefaults.hasOwnProperty(posData) ? posData : '';
+  		if (!posData && posType) {
+  			posData = posType == 'v' ? 'bottom' : 'right'
+  		}
+  		var pos = posDefaults.hasOwnProperty(posData) ? posDefaults[posData] : 0;
+  		// if numeric, negative indicates offset from bottom or right while positive is offset from top or left
+  	} else {
+  		var pos = parseInt(posData);
+  		if (pos <= 0) {
+  			posData = posType == 'v' ? 'bottom' : 'right';
+  		} else {
+  			posData = posType == 'v' ? 'top' : 'left';
+  		}
+  	}
+  	// turn negative numbers
+  	var posObj = {};
+  	posObj[posData] = (Math.abs(pos) + bump) + 'px'
+  	return posObj;
+  };
+
   return yaaas;
 });
 
@@ -308,55 +346,26 @@ yaaasApp.directive('yaaAlert', function(CONSTANTS, yaaaService, $window) {
 				pe = pe ? pe.toLowerCase()=='true': false;
 			};
 			
-			scope.getWidthStyle = function(width) {
-				width = width || scope.width || '300';
-				width = width.replace(/\D/g,'');
-				return 'width: ' + width + 'px; ';				
-			};
-			
-			/**
-			 * @function
-			 * @description Return the position parameters for a specified 
-			 * position attribute
-			 * @param {string} if non-numeric, expect "top/bottom" for v and "left/right"
-			 " for h.  If numeric, + number indicates ofset from top or left 
-			 * and - number indicates offset from right or bottom based on posType;
-			 * 0 will be considered negative for defaulting position
-			 * @param {string} posType 'V' for vertical position attribute, 'H' for horizontal
-			 */
-			scope.getPosStyle = function(posData, posType) {
-				posData = posData ? posData.toLowerCase() : '';
-				posType = posType ? posType.toLowerCase() : '';
-				if (posType != 'v' && posType != 'h') return '';
-				
-				var posDefaults = CONSTANTS.defaults[posType]
+			scope.getPosNgStyle = function () {
+				var styleObj = {};
+				angular.extend(styleObj, scope.yaaas.getPosObj(scope.vPos,'v'));
+				angular.extend(styleObj, scope.yaaas.getPosObj(scope.hPos,'h'));
 
-				// If not numeric, MUST be 'top' or 'bottom' for vertical or 'left' or 'right' for horizontal
-				if (isNaN(parseInt(posData))) {	
-					posData = posDefaults.hasOwnProperty(posData) ? posData : '';
-					if (!posData && posType) {
-						posData = posType == 'v' ? 'bottom' : 'right'
-					}
-					var pos = posDefaults.hasOwnProperty(posData) ? posDefaults[posData] : 0;
-				// if numeric, negative indicates offset from bottom or right while positive is offset from top or left
-				} else {
-					var pos = parseInt(posData);
-					if (pos<=0) {
-						posData = posType == 'v' ? 'bottom' : 'right';
-					} else {
-						posData = posType == 'v' ? 'top' : 'left';
-					}
-				}
-				// turn negative numbers
-				return posData + ': ' + Math.abs(pos) + 'px; '
-			};
-			
+				var width = scope.width || '300';
+				width = width.replace(/\D/g, '');
+				styleObj.width = width + 'px; ';
+
+				return styleObj;
+			}
+
 	
 		}
 		
 		
 	};
 });
+
+
 /**
  *  Directive to display the alerts toolbar
  *  Allows user to control which messages are displayed, the ability to display all the messages
@@ -389,43 +398,15 @@ yaaasApp.directive('yaaToolbar', function(CONSTANTS, yaaaService, $window) {
 			}
 			
 			/**
-			 * @function
-			 * @description Return the position parameters for a specified 
-			 * position attribute
-			 * @param {string} if non-numeric, expect "top/bottom" for v and "left/right"
-			 " for h.  If numeric, + number indicates ofset from top or left 
-			 * and - number indicates offset from right or bottom based on posType;
-			 * 0 will be considered negative for defaulting position
-			 * @param {string} posType 'V' for vertical position attribute, 'H' for horizontal
-			 */
-			$scope.getPosStyle = function(posData, posType, bump) {
-				bump = +bump || 0;
-				posData = posData ? posData.toLowerCase() : '';
-				posType = posType ? posType.toLowerCase() : '';
-				if (posType != 'v' && posType != 'h') return '';
-				
-				var posDefaults = CONSTANTS.defaults[posType]
+			 * Get the style object for displaying using ng-style;
+			 **/
+			$scope.getPosNgStyle = function () {
+				var styleObj = {};
+				angular.extend(styleObj, $scope.yaaas.getPosObj($scope.vPos,'v'));
+				angular.extend(styleObj, $scope.yaaas.getPosObj($scope.hPos,'h'));
+				return styleObj;
+			}
 
-				// If not numeric, MUST be 'top' or 'bottom' for vertical or 'left' or 'right' for horizontal
-				if (isNaN(parseInt(posData))) {	
-					posData = posDefaults.hasOwnProperty(posData) ? posData : '';
-					if (!posData && posType) {
-						posData = posType == 'v' ? 'bottom' : 'right'
-					}
-					var pos = posDefaults.hasOwnProperty(posData) ? posDefaults[posData] : 0;
-				// if numeric, negative indicates offset from bottom or right while positive is offset from top or left
-				} else {
-					var pos = parseInt(posData);
-					if (pos<=0) {
-						posData = posType == 'v' ? 'bottom' : 'right';
-					} else {
-						posData = posType == 'v' ? 'top' : 'left';
-					}
-				}
-				// turn negative numbers
-				return posData + ': ' + (Math.abs(pos)+bump) + 'px; '
-			};
-			
 			/**
 			 * Turn on and off the history display
 			 **/
